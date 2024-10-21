@@ -3,7 +3,7 @@
   description: "Render math formulas with KaTeX"
   github_repo: "ArtalkJS/Artalk"
   npm_package: "@artalk/plugin-katex"
-  author_name: "ArtalkOfficial"
+  author_name: "Artalk"
   author_link: "https://github.com/ArtalkJS/Artalk"
   donate_link: "https://buymeacoffee.com/artalk"
 
@@ -12,6 +12,6 @@
   description: "3rd party social login support"
   github_repo: "ArtalkJS/Artalk"
   npm_package: "@artalk/plugin-auth"
-  author_name: "ArtalkOfficial"
+  author_name: "Artalk"
   author_link: "https://github.com/ArtalkJS/Artalk"
   donate_link: "https://buymeacoffee.com/artalk"
