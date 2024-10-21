@@ -69,5 +69,6 @@ const checkDiff = async (): Promise<boolean> => {
 }
 
 checkDiff().then((isDiff) => {
+  console.log('DIFF_RESULT: ', isDiff)
   console.log(`::set-output name=is_diff::${isDiff ? 1 : 0}`)
 })
