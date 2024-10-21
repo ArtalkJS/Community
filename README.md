@@ -19,7 +19,7 @@ Assuming you have already created your plugin or theme, and published it to [NPM
 To submit your plugin or theme, please follow these steps:
 
 1. Fork this repository.
-2. Edit `plugins.yaml` or `themes.yaml` in the root directory of your forked repository.
+2. Edit [data/plugins.yaml](https://github.com/ArtalkJS/Community/edit/master/data/plugins.yaml) or [data/themes.yaml](https://github.com/ArtalkJS/Community/edit/master/data/themes.yaml) in the root directory of your forked repository.
 3. Add your plugin or theme to the list, following the format of the existing entries.
 
    ```yaml
@@ -38,7 +38,7 @@ To submit your plugin or theme, please follow these steps:
 
 ### How it works
 
-- Artalk will read the `plugins.yaml` and `themes.yaml` files in this repository to display the list of available plugins and themes.
+- Artalk will read the `data/plugins.yaml` and `data/themes.yaml` files in this repository to display the list of available plugins and themes.
 - After you updated the list, Artalk will automatically fetch the latest data from your `github_repo` and `npm_package` to get the information about your plugin or theme.
 - The `id` field is used to uniquely identify your plugin or theme. It should be a unique string that is not used by any other plugin or theme in this repository.
 - Your github plugin repository should contain a `README.md` file that describes your plugin or theme. This file will be displayed in the Artalk plugin or theme page.

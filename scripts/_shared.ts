@@ -4,8 +4,8 @@ import yaml from 'yaml'
 import type { LocalEntry } from './_types'
 
 export const REGISTRY_DIST = path.resolve(__dirname, '../dist/registry.json')
-export const PLUGINS_YAML_FILE = path.resolve(__dirname, '../plugins.yaml')
-export const THEMES_YAML_FILE = path.resolve(__dirname, '../themes.yaml')
+export const PLUGINS_YAML_FILE = path.resolve(__dirname, '../data/plugins.yaml')
+export const THEMES_YAML_FILE = path.resolve(__dirname, '../data/themes.yaml')
 
 export const GITHUB_TOKEN_HEADERS = {
   Authorization: process.env.GITHUB_TOKEN ? `Bearer ${process.env.GITHUB_TOKEN}` : '',
