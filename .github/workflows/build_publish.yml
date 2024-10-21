@@ -1,0 +1,102 @@
+name: Build and Publish
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  schedule:
+    - cron: "0 16 * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      need_publish: ${{ steps.diff.outputs.is_diff || '0' }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: pnpm
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Cache Dist
+        uses: actions/cache@v4
+        with:
+          path: ./dist
+          key: ${{ runner.os }}-artalk-community-dist-cache
+
+      - name: Build
+        run: pnpm build
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-dist
+          path: |
+            dist
+          if-no-files-found: error
+          retention-days: 1
+
+      - if: ${{ github.repository == 'ArtalkJS/Community' && github.ref == 'refs/heads/master' }}
+        name: Diff dist
+        id: diff
+        run: pnpm diff:dist
+
+  publish:
+    if: ${{ needs.build.outputs.need_publish == '1' }}
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-dist
+          path: dist
+
+      - name: Tagging
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+
+          gh release delete latest --yes || true
+          git push origin :refs/tags/latest || true
+
+          git tag -f latest
+          git push -f origin latest
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          files: |
+            dist/**
+          fail_on_unmatched_files: true
+          draft: false
+
+      - name: Trigger Netlify Rebuild
+        run: |
+          curl -X POST -d {} "${{ secrets.DOCS_NETLIFY_BUILD_WEBHOOK_URL }}"

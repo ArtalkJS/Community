@@ -1,0 +1,21 @@
+{
+  "name": "artalk-community",
+  "private": true,
+  "scripts": {
+    "build": "tsx ./scripts/build.ts",
+    "validate": "tsx ./scripts/validate.ts",
+    "lint": "pnpm validate && prettier --check .",
+    "lint:fix": "prettier --write .",
+    "diff:dist": "tsx ./scripts/diff-dist.ts"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.7.7",
+    "axios": "^1.7.7",
+    "fs-extra": "^11.2.0",
+    "picocolors": "^1.1.1",
+    "prettier": "^3.3.3",
+    "tsx": "^4.19.1",
+    "yaml": "^2.6.0"
+  }
+}
