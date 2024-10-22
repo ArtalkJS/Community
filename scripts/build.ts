@@ -54,6 +54,12 @@ const downloadFile = async (url: string): Promise<Buffer> => {
   return Buffer.from(response.data)
 }
 
+// Request document headers
+const requestHead = async (url: string) => {
+  const response = await axios.head(url)
+  return response.headers
+}
+
 // Function to generate SRI hash
 const generateSRI = (content: Buffer, algorithm: string = 'sha512'): string => {
   const hash = crypto.createHash(algorithm).update(content).digest('base64')
@@ -141,6 +147,13 @@ const buildRegistryEntry = async (
     const integrity = await generateSRIFromURL(source)
     if (!integrity) return null
 
+    let optionsSchema = `${cdnBase}/${path.dirname(mainFile)}/artalk-plugin-options.schema.json`
+    try {
+      await requestHead(optionsSchema)
+    } catch {
+      optionsSchema = '' // unset if returns 404
+    }
+
     distEntry = {
       ...distEntry,
       version,
@@ -148,7 +161,7 @@ const buildRegistryEntry = async (
       integrity,
       updated_at: npmInfo['time'][version],
       min_artalk_version: extractMinArtalkClientVersion(npmPkgData),
-      options_schema: `${cdnBase}/${path.dirname(mainFile)}/artalk-plugin-options.schema.json`,
+      options_schema: optionsSchema,
     }
   }
 
