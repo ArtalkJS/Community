@@ -24,7 +24,7 @@ export interface RegistryEntry {
   verified: boolean
   version: string
   updated_at: string
-  min_client_version: string
+  min_artalk_version: string
   type: 'plugin' | 'theme'
 }
 

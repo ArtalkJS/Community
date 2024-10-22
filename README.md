@@ -19,7 +19,7 @@ Assuming you have already created your plugin or theme, and published it to [NPM
 To submit your plugin or theme, please follow these steps:
 
 1. Fork this repository.
-2. Edit [data/plugins.yaml](https://github.com/ArtalkJS/Community/edit/master/data/plugins.yaml) or [data/themes.yaml](https://github.com/ArtalkJS/Community/edit/master/data/themes.yaml) in the root directory of your forked repository.
+2. Edit [plugins.yaml](https://github.com/ArtalkJS/Community/edit/master/data/plugins.yaml) or [themes.yaml](https://github.com/ArtalkJS/Community/edit/master/data/themes.yaml) in the `data` folder of your forked repository.
 3. Add your plugin or theme to the list, following the format of the existing entries.
 
    ```yaml

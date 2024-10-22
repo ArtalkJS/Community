@@ -115,7 +115,7 @@ const buildRegistryEntry = async (
     source: cacheEntry?.source || '',
     integrity: cacheEntry?.integrity || '',
     updated_at: cacheEntry?.updated_at || '',
-    min_client_version: cacheEntry?.min_client_version || '',
+    min_artalk_version: cacheEntry?.min_artalk_version || '',
   }
 
   // Get source and integrity
@@ -143,7 +143,7 @@ const buildRegistryEntry = async (
       source,
       integrity,
       updated_at: npmInfo['time'][version],
-      min_client_version: extractMinArtalkClientVersion(npmPkgData),
+      min_artalk_version: extractMinArtalkClientVersion(npmPkgData),
     }
   }
 
