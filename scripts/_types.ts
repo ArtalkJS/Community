@@ -21,6 +21,7 @@ export interface RegistryEntry {
   npm_name: string
   source: string
   integrity: string
+  options_schema: string
   verified: boolean
   version: string
   updated_at: string

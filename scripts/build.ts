@@ -1,6 +1,7 @@
 /**
  * This script is used to generate the `registry.json` file.
  */
+import path from 'node:path'
 import fs from 'fs-extra'
 import axios from 'axios'
 import crypto from 'crypto'
@@ -114,6 +115,7 @@ const buildRegistryEntry = async (
     version: cacheEntry?.version || '',
     source: cacheEntry?.source || '',
     integrity: cacheEntry?.integrity || '',
+    options_schema: cacheEntry?.options_schema || '',
     updated_at: cacheEntry?.updated_at || '',
     min_artalk_version: cacheEntry?.min_artalk_version || '',
   }
@@ -133,7 +135,9 @@ const buildRegistryEntry = async (
       )
       return null
     }
-    const source = `https://cdn.jsdelivr.net/npm/${srcEntry.npm_package}@${version}/${mainFile}`
+
+    const cdnBase = `https://cdn.jsdelivr.net/npm/${srcEntry.npm_package}@${version}`
+    const source = `${cdnBase}/${mainFile}`
     const integrity = await generateSRIFromURL(source)
     if (!integrity) return null
 
@@ -144,6 +148,7 @@ const buildRegistryEntry = async (
       integrity,
       updated_at: npmInfo['time'][version],
       min_artalk_version: extractMinArtalkClientVersion(npmPkgData),
+      options_schema: `${cdnBase}/${path.dirname(mainFile)}/artalk-plugin-options.schema.json`,
     }
   }
 
