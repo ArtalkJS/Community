@@ -4,6 +4,7 @@ export interface LocalEntry {
   description: string
   github_repo: string
   npm_package: string
+  source_main?: string
   author_name: string
   author_link: string
   donate_link?: string

@@ -80,6 +80,7 @@ const generateSRIFromURL = async (url: string, algorithm: string = 'sha512'): Pr
 
 const extractMinArtalkClientVersion = (pkgData: any): string => {
   if (!pkgData) return ''
+  if (pkgData['name'] === 'artalk' && pkgData['version']) return pkgData['version']
   const minVersion = pkgData['peerDependencies']['artalk']
   if (!minVersion) return ''
   return minVersion.replace(/[^0-9.]/g, '')
@@ -116,7 +117,7 @@ const buildRegistryEntry = async (
     repo_name: srcEntry.github_repo,
     repo_link: `https://github.com/${srcEntry.github_repo}`,
     npm_name: srcEntry.npm_package,
-    verified: srcEntry.npm_package.startsWith('@artalk/'),
+    verified: srcEntry.npm_package.startsWith('@artalk/') || srcEntry.npm_package === 'artalk',
 
     version: cacheEntry?.version || '',
     source: cacheEntry?.source || '',
@@ -134,13 +135,18 @@ const buildRegistryEntry = async (
 
     // Update the entry with the latest version
     const npmPkgData = npmInfo['versions'][version]
-    const mainFile = String(npmPkgData['main']).replace(/^(\.\/|\/)/, '')
+
+    let mainFile = srcEntry.source_main
     if (!mainFile) {
-      console.error(
-        `${pc.red('[FAIL]')} ${pc.bold(srcEntry.npm_package)} - No main file found in package.json`,
-      )
-      return null
+      mainFile = String(npmPkgData['main'])
+      if (!mainFile) {
+        console.error(
+          `${pc.red('[FAIL]')} ${pc.bold(srcEntry.npm_package)} - No main file found in package.json`,
+        )
+        return null
+      }
     }
+    mainFile = mainFile.replace(/^(\.\/|\/)/, '')
 
     const cdnBase = `https://cdn.jsdelivr.net/npm/${srcEntry.npm_package}@${version}`
     const source = `${cdnBase}/${mainFile}`
